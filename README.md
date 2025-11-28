@@ -1,4 +1,7 @@
 ````markdown
+
+---
+
 ## QuantPairs
 
 Framework C#/.NET pour recherche et backtest de stratégies de **pairs trading** :
