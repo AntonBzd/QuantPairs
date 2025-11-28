@@ -1,0 +1,17 @@
+## Visual Studio
+bin/
+obj/
+TestResults/
+*.user
+*.suo
+
+## Rider
+.idea/
+
+## Dotnet
+project.lock.json
+*.log
+
+## Data folders
+data/raw/*
+data/processed/*

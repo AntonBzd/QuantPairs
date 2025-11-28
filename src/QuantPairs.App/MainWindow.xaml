@@ -1,0 +1,63 @@
+<Window x:Class="QuantPairs.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="QuantPairs Runner">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>   <!-- dataset -->
+            <RowDefinition Height="Auto"/>   <!-- buttons -->
+            <RowDefinition Height="Auto"/>   <!-- progress -->
+            <RowDefinition Height="*"/>      <!-- log -->
+        </Grid.RowDefinitions>
+
+        <!-- Dataset picker -->
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Dataset:" VerticalAlignment="Center" Margin="0,0,8,0" FontWeight="SemiBold"/>
+            <TextBox x:Name="TxtDataset" Grid.Column="1" Height="28" VerticalAlignment="Center" Padding="6,4"/>
+            <Button Grid.Column="2" Content="📁 Parcourir" Margin="8,0,0,0" Padding="12,6"
+                    Click="OnBrowse" Background="#2196F3" Foreground="White" BorderThickness="0"/>
+        </Grid>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+            <Button x:Name="BtnRun" Content="▶️ Exécuter le pipeline" Padding="16,6"
+                    Click="OnRun" Background="#4CAF50" Foreground="White" BorderThickness="0" FontWeight="SemiBold"/>
+            <Button x:Name="BtnExport" Content="📄 Exporter en PDF" Margin="10,0,0,0" Padding="16,6"
+                    IsEnabled="False" Click="OnExport" Background="#FF9800" Foreground="White" BorderThickness="0" FontWeight="SemiBold"/>
+        </StackPanel>
+
+        <!-- Progress -->
+        <Grid Grid.Row="2" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ProgressBar x:Name="Bar" Grid.Column="0" Height="18" Minimum="0" Maximum="100" Value="0"/>
+            <TextBlock x:Name="TxtProgress" Grid.Column="1" Margin="10,0,0,0"
+                       VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold"/>
+        </Grid>
+
+        <!-- Log (like terminal) -->
+        <Border Grid.Row="3" BorderBrush="#DDD" BorderThickness="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <TextBox x:Name="TxtLog"
+                         FontFamily="Consolas"
+                         FontSize="12"
+                         IsReadOnly="True"
+                         TextWrapping="NoWrap"
+                         AcceptsReturn="True"
+                         BorderThickness="0"
+                         Background="#1E1E1E"
+                         Foreground="#D4D4D4"
+                         Padding="8"
+                         VerticalScrollBarVisibility="Disabled"/>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Window>
