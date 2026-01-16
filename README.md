@@ -2,11 +2,11 @@
 
 Framework C#/.NET pour recherche et backtest de stratégies de **pairs trading** :
 
-- Pré-traitement & alignement des séries
+- Pré-traitement des séries temporelles
 - Clustering (PCA + KMeans)
 - Tests de cointégration (Engle–Granger)
-- Grille de validation (VALID) et sélection
-- Backtest **Out-Of-Sample** (OOS) 
+- Grille de validation, filtre de Kalman et sélection
+- Backtest et Optimisation
 
 ---
 
@@ -21,13 +21,13 @@ QuantPairs/
 ├── .editorconfig
 │
 ├── src/
-│   ├── QuantPairs.Core/         # Modèles & logique métier pure
-│   ├── QuantPairs.Data/         # I/O, readers CSV/Excel, validation schéma
-│   ├── QuantPairs.MarketData/   # Alignement, retours, log-prices
-│   ├── QuantPairs.Research/     # PCA/KMeans, Engle–Granger, validation
-│   ├── QuantPairs.Trading/      # Kalman hedge, backtester, sizing
+│   ├── QuantPairs.Core/         # Modèles
+│   ├── QuantPairs.Data/         # I/O, Readers CSV/Excel
+│   ├── QuantPairs.MarketData/   # Traitement des données
+│   ├── QuantPairs.Research/     # PCA/KMeans, Engle–Granger, Sélection
+│   ├── QuantPairs.Trading/      # Kalman hedge, Sizing, Backtester
 │   ├── QuantPairs.Cli/          # CLI 
-│   └── QuantPairs.App/          # Interface WPF minimaliste
+│   └── QuantPairs.App/          # Interface Simple WPF
 │
 └── tests/
     └── QuantPairs.Tests/    
@@ -77,7 +77,7 @@ Toutes les commandes se font via le projet `QuantPairs.Cli`.
 
 > Astuce : place-toi à la racine du repo (`QuantPairs/`).
 
-### 1) Résumé des données (sanity check)
+### 1) Résumé des données
 
 Vérifie que ton dataset est bien lu et validé.
 
@@ -108,9 +108,9 @@ Sortie principale :
 
 La commande :
 
-1. Fait un split **80% train / 20% test** (automatique si non fourni).
+1. Fait un split **80% train / 20% test** (automatique si répartition split non fourni).
 2. Construit la matrice de **log-returns** sur TRAIN.
-3. Applique **PCA** puis **KMeans** (auto ou manuel).
+3. Applique **PCA** puis **KMeans** (auto ou manuel si spécification des paramètres).
 4. Affiche la variance expliquée et la composition de chaque cluster.
 
 ---
@@ -139,11 +139,11 @@ Contenu :
 
 La commande :
 
-1. Réutilise un split **80/20** (TRAIN / TEST).
+1. Réutilise le split **80/20** (TRAIN / TEST).
 2. Aligne les séries et construit les **log-prices**.
-3. Teste **toutes les paires** (dans les clusters) dans les deux sens.
+3. Teste **toutes les paires** possibles dans les clusters dans les deux sens.
 4. Calcule la **half-life** de la stratégie de spread.
-5. Résume le % de paires cointégrées (5% / 10%) et affiche le top 10 par cluster.
+5. Résume le % de paires cointégrées (seuil critique 5% / 10%) et affiche le top 10 par cluster.
 
 ---
 
@@ -212,7 +212,7 @@ Sorties :
 
 * Résumé console des stratégies OOS :
 
-  * Sharpe, Calmar, Max Drawdown, nombre de trades, Win%, statut (ELITE / STRONG / …)
+  * Sharpe, Calmar, Max Drawdown, nombre de trades, Win%, statut
 * Fichier equity :
 
   * `data/processed/OOS_EQUITY_TOP{N}_YYYYMMDD_HHmmss.csv`
@@ -256,7 +256,7 @@ Date,BTCUSD,ETHUSD,LTCUSD
   → mapping série → cluster
 
 * `data/processed/coint_pairs_*.csv`
-  → résultats Engle–Granger + half-life + flags 5% / 10%
+  → résultats Engle–Granger + half-life + flags seuil 5% / 10%
 
 * `data/processed/validate_all_*.csv`
   → toutes les configs évaluées sur VALID, triables par Sharpe
