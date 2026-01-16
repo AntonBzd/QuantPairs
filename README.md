@@ -273,3 +273,9 @@ dotnet test
 ```
 
 ---
+
+## Author & Contact
+**Antonin Bezard**  
+Reach me via [LinkedIn](https://www.linkedin.com/in/antonin-bezard-a11511177/)
+
+---
